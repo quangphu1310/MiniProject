@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,11 @@ using MiniProject_API.Models.DTO;
 using MiniProject_API.Repository.IRepository;
 using System.Net;
 
-namespace MiniProject_API.Controllers
+namespace MiniProject_API.Controllers.v2
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("2.0")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _cateRepo;

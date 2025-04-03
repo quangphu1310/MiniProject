@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Azure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,16 +8,16 @@ using MiniProject_API.Models.DTO;
 using MiniProject_API.Repository.IRepository;
 using System.Net;
 
-namespace MiniProject_API.Controllers
+namespace MiniProject_API.Controllers.v2
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("2.0")]
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepo;
         private readonly APIResponse _response;
         private readonly IMapper _mapper;
-
         public ProductController(IProductRepository productRepository, IMapper mapper)
         {
             _productRepo = productRepository;
@@ -41,6 +42,7 @@ namespace MiniProject_API.Controllers
                 return BadRequest(_response);
             }
         }
+
         [HttpGet("{id:int}", Name = "GetProductById")]
         public async Task<ActionResult<APIResponse>> GetProductById(int id)
         {
@@ -170,8 +172,9 @@ namespace MiniProject_API.Controllers
             {
                 _response.IsSuccess = false;
                 _response.Errors = new List<string>() { ex.ToString() };
+                return _response;
+
             }
-            return _response;
         }
     }
 }
